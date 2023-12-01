@@ -7,8 +7,16 @@ namespace Group_Project
 {
     public class Character
     {
-        private int health;
-        private int name;
+        public ClassType ClassType;
+        public string name;
+        public bool isUser;
+
+        public Character(string name, ClassType ct, bool isUser)
+        {
+            this.isUser = isUser;
+            this.name = name;
+            this.ClassType = ct;
+        }
 
         public void attack()
         {

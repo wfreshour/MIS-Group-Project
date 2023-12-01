@@ -7,9 +7,9 @@ namespace Group_Project
 {
     public enum ClassType
     {
-        DuelWield,
+        Pilot,
         Heavy,
-        Shield,
-        Stealth
+        Engineer,
+        Marksman
     }
 }
