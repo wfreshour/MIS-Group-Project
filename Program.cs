@@ -36,7 +36,7 @@ namespace Group_Project
 
             //Load monsters from external file
 
-            //Generate Dungeon
+            //Generate Rooms
         }
 
         /// <summary>
