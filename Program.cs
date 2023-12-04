@@ -8,6 +8,9 @@ namespace Group_Project
         {
             string input; // to hold users input
             string name; // name of the user
+            int xp = 0; // amount of xp found in a chest
+            int numRooms = 9; //holds number of rooms
+            bool nextRoom = false; // tells whether or not user chose to enter next room
             ClassType userClass; // chosen class of the user
             List<Character> characters = new List<Character>();
 
@@ -36,7 +39,48 @@ namespace Group_Project
 
             //Load monsters from external file
 
-            //Generate Rooms
+            for (int i = 0; i < numRooms; i++)
+            {
+                //Generate Room
+                Room r = new Room(i+1);
+
+                //Start combat
+
+                do
+                {
+                    //Ask user what they would like to do
+                    Console.WriteLine("You are in the {0}, what would you like to do? (Loot, Check Stats, Enter next room)", r.roomName);
+                    input = Console.ReadLine();
+
+                    if (input == "Loot")
+                    {
+                        bool hasChest = r.Loot(ref xp);
+
+                        if (hasChest)
+                        {
+                            Console.WriteLine("A chest was found! It contained {0} xp", xp);
+                            foreach (Character c in characters)
+                            {
+                                c.AddXP(xp);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No loot was found.");
+                        }
+                    }
+                    else if (input == "Check Stats")
+                    {
+                        r.CheckStats(characters[0]);
+                    }
+                    else if (input == "Enter next room")
+                    {
+                        nextRoom = true;
+                    }
+                } while (!nextRoom);
+                nextRoom = false;
+            }
+
         }
 
         /// <summary>
