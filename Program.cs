@@ -14,6 +14,7 @@ namespace Group_Project
             bool nextRoom = false; // tells whether or not user chose to enter next room
             ClassType userClass; // chosen class of the user
             List<Character> characters = new List<Character>();
+            
 
             // greet user and present story
             Console.WriteLine("Welcome to Recapture!");
@@ -34,6 +35,7 @@ namespace Group_Project
         
             // create the users Character object
             characters.Add(new Character(name, userClass, true));
+            Inventory inventory = new Inventory();
 
             // create remaining crew
             FillCrew(characters, userClass);
@@ -57,7 +59,7 @@ namespace Group_Project
                 do
                 {
                     //Ask user what they would like to do
-                    Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot, Check Stats, Enter next room)", r.roomName);
+                    Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot, Check Stats, Enter next room, Check Inventory)", r.roomName);
                     input = Console.ReadLine();
 
                     if (input == "Loot")
@@ -85,6 +87,10 @@ namespace Group_Project
                     {
                         nextRoom = true;
                         Console.Clear();
+                    }
+                    else if (input == "Check Inventory")
+                    {
+                        r.DisplayItems(inventory);
                     }
                 } while (!nextRoom);
                 nextRoom = false;
