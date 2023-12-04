@@ -14,11 +14,14 @@ namespace Group_Project
             ClassType userClass; // chosen class of the user
             List<Character> characters = new List<Character>();
 
-            // greeet user and present story
+            // greet user and present story
             Console.WriteLine("Welcome to Recapture!");
+            Console.WriteLine("\nYou and your crew are traveling through space in your cargo freight ship when suddenly a large group of pirates\n" +
+                " trap you in a Grav Lock! They quickly board and overwhelm you and your crew and have locked you in your quarters.\n Luckily, the pirates do not" +
+                " know about the secret weapons locker you keep hidden away in the room. Arm yourselves\n and recapture your ship by clearing all the pirates!");
 
             // get users name
-            Console.WriteLine("Please enter your name: ");
+            Console.WriteLine("\nPlease enter your name: ");
             name = Console.ReadLine();
 
             // get users class
@@ -26,7 +29,8 @@ namespace Group_Project
             DisplayClass();
             Console.WriteLine("Please enter the number for your choice of class (The classes you dont choose will be assigned to your crew)");
             userClass = (ClassType)ValidInput(Console.ReadLine(), 1, Enum.GetValues(typeof(ClassType)).Cast<ClassType>().Distinct().Count());
-
+            Console.WriteLine($"You chose {userClass} as your class.");
+        
             // create the users Character object
             characters.Add(new Character(name, userClass, true));
 
@@ -146,7 +150,7 @@ namespace Group_Project
                     isValid = false;
                 }
             }
-            return int.Parse(input);
+            return int.Parse(input) -1;
         }
 
         /// <summary>
