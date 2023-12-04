@@ -26,7 +26,7 @@ namespace Group_Project
             if (chestPercentage > 10) { hasChest = true; }
             else { hasChest = false; }
 
-            if (roomNum == 1) { roomName = "Common Area"; }
+            if (roomNum == 1) { roomName = "Living Quarters"; }
             else if (roomNum == 2) { roomName = "Dining Hall"; }
             else if (roomNum == 3) { roomName = "Kitchen"; }
             else if (roomNum == 4) { roomName = "Cargo Hold"; }
@@ -47,7 +47,7 @@ namespace Group_Project
             if (hasChest == true && hasLooted == false)
             {
                 Random rnd = new Random();
-                xp = rnd.Next(20);
+                xp = rnd.Next(5, 20);
                 hasLooted = true;
                 return true;
             }
@@ -79,7 +79,7 @@ namespace Group_Project
             }
             if (c.upgradePoints > 0)
             {
-                Console.WriteLine("You have {0} upgrade points, would you like to upgrade?", c.upgradePoints);
+                Console.WriteLine("You have {0} upgrade points, would you like to upgrade? (Y/N)", c.upgradePoints);
                 bool input = InputConfirm();
                 if (input) { c.UpgradeStats(); }
             }

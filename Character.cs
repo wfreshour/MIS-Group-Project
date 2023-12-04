@@ -79,22 +79,22 @@ namespace Group_Project
 
             if (input == "Accuracy")
             {
-                if (Accuracy < 10) { Accuracy += 1; upgradePoints -= 1; }
+                if (Accuracy < 10) { Accuracy += 1; upgradePoints -= 1; Console.WriteLine("Accuracy Increased!"); }
                 else { Console.WriteLine("You already have 10 accuracy, please select another stat."); }
             }
             else if (input == "Health")
             {
-                if (Health < 10) { Health += 1; upgradePoints -= 1; }
+                if (Health < 10) { Health += 1; upgradePoints -= 1; Console.WriteLine("Health Increased!"); }
                 else { Console.WriteLine("You already have 10 health, please select another stat."); }
             }
             else if (input == "Speed")
             {
-                if (Speed < 10) { Speed += 1; upgradePoints -= 1; }
+                if (Speed < 10) { Speed += 1; upgradePoints -= 1; Console.WriteLine("Speed Increased!"); }
                 else { Console.WriteLine("You already have 10 speed, please select another stat."); }
             }
             else if (input == "Stealth")
             {
-                if (Stealth < 10) { Stealth += 1; upgradePoints -= 1; }
+                if (Stealth < 10) { Stealth += 1; upgradePoints -= 1; Console.WriteLine("Stealth Increased!"); }
                 else { Console.WriteLine("You already have 10 stealth, please select another stat."); }
             }
         }

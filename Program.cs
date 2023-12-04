@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Group_Project
 {
@@ -40,8 +41,11 @@ namespace Group_Project
             //Prompt the user to continue
             Console.WriteLine("You are now ready to begin the journey, press any key to continue...");
             AnyKey();
+            Console.Clear();
 
             //Load monsters from external file
+            //string filePath = "path";                                             creates connection to file             NEEDS WORK
+            //Enemy pirate =createEnemy(filePath);                                  reads from external file            NEEDS WORK
 
             for (int i = 0; i < numRooms; i++)
             {
@@ -53,7 +57,7 @@ namespace Group_Project
                 do
                 {
                     //Ask user what they would like to do
-                    Console.WriteLine("You are in the {0}, what would you like to do? (Loot, Check Stats, Enter next room)", r.roomName);
+                    Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot, Check Stats, Enter next room)", r.roomName);
                     input = Console.ReadLine();
 
                     if (input == "Loot")
@@ -62,7 +66,7 @@ namespace Group_Project
 
                         if (hasChest)
                         {
-                            Console.WriteLine("A chest was found! It contained {0} xp", xp);
+                            Console.WriteLine("\nA chest was found! It contained {0} xp", xp);
                             foreach (Character c in characters)
                             {
                                 c.AddXP(xp);
@@ -70,7 +74,7 @@ namespace Group_Project
                         }
                         else
                         {
-                            Console.WriteLine("No loot was found.");
+                            Console.WriteLine("\nNo loot was found.");
                         }
                     }
                     else if (input == "Check Stats")
@@ -80,6 +84,7 @@ namespace Group_Project
                     else if (input == "Enter next room")
                     {
                         nextRoom = true;
+                        Console.Clear();
                     }
                 } while (!nextRoom);
                 nextRoom = false;
