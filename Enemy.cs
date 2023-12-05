@@ -10,14 +10,21 @@ namespace Group_Project
 {
     public class Enemy
     {
-        public int health;
-        public string name;
-        public int speed;
-        public int stealth;
-        public int accuracy;
-        public int loot;
+        public int health; //enemies health
+        public string name; //enemies name
+        public int speed; //enemies speed
+        public int stealth; //enemies stealth
+        public int accuracy; //enemies accuracy
+        public int loot; //enemies loot
 
-
+        /// <summary>
+        /// Constructor for the enemy, randomly assigns it loot
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="health"></param>
+        /// <param name="speed"></param>
+        /// <param name="stealth"></param>
+        /// <param name="accuracy"></param>
         public Enemy(string name, int health, int speed, int stealth, int accuracy)
         {
             this.name = name;
@@ -28,16 +35,10 @@ namespace Group_Project
             loot = new Random().Next(0, 4);
         }
 
-        public void death()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void killPlayer()
-        {
-            throw new System.NotImplementedException();
-        }
-
+        /// <summary>
+        /// Allows the enemy to attack
+        /// </summary>
+        /// <param name="c">character they are attacking</param>
         public void EnemyAttack(Character c)
         {
             int successChance = 50 + (accuracy * 5);                    //uses accuracy stat to determine if they hit shot

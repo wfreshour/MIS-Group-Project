@@ -8,18 +8,18 @@ namespace Group_Project
 {
     public class Character
     {
-        public ClassType ct;
-        public string name;
-        public bool isUser;
-        public int level;
-        public int xp;
-        public int upgradePoints;
-        public int Accuracy;
-        public int Health;
-        public int Speed;
-        public int Stealth;
-        public bool isAlive;
-        public int Damage;
+        public ClassType ct; //characters class
+        public string name; //characaters name
+        public bool isUser; //whether or not the character is the user
+        public int level; //characters level
+        public int xp; //characters xp
+        public int upgradePoints; //amount of upgrade points
+        public int Accuracy; //amount of accuracy
+        public int Health; //amount of health
+        public int Speed; //amount of speed
+        public int Stealth; //amount of stealth
+        public bool isAlive; //whether or not the character is alive
+        public int Damage; //damage done per hit
 
         /// <summary>
         /// constructor for the character
@@ -40,6 +40,9 @@ namespace Group_Project
             Damage = 1;
         }
 
+        /// <summary>
+        /// Assigns characters stats based on class
+        /// </summary>
         public void AssignStats()
         {
             if (ct == ClassType.Pilot)
@@ -78,6 +81,9 @@ namespace Group_Project
             }
         }
 
+        /// <summary>
+        /// Allows user to upgrade stats
+        /// </summary>
         public void UpgradeStats()
         {
             Console.WriteLine("Which stat would you like to upgrade?");
@@ -105,6 +111,11 @@ namespace Group_Project
             }
         }
 
+        /// <summary>
+        /// Allows player to attack
+        /// </summary>
+        /// <param name="e">enemy to attack</param>
+        /// <returns>whether or not the enemy died</returns>
         public bool PlayerAttack(Enemy e)
         {
             int successChance = 50 + (Accuracy * 5);              //takes accuracy stat and detirmines if successfull hit occurs
@@ -126,6 +137,11 @@ namespace Group_Project
 
         }
 
+        /// <summary>
+        /// Allows user to use an item
+        /// </summary>
+        /// <param name="i">users inventory</param>
+        /// <param name="characters">List of crew</param>
         public void UseItem(Inventory i, List<Character> characters)
         {
             Console.WriteLine("Which Item would you like to use?");

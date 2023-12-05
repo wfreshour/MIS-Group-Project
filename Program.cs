@@ -32,6 +32,7 @@ namespace Group_Project
                 List<Enemy> enemies = new List<Enemy>();
                 List<int> loot = new List<int>(); // holds list of loot
 
+                //get high score
                 topScore = GetHighScores(ref topName);
 
 
@@ -69,20 +70,21 @@ namespace Group_Project
                 //Load enemies from external file
                 GenerateEnemies(enemies);
 
-
+                // loops through each room
                 for (int i = 0; i < numRooms; i++)
                 {
                     nextRoom = false;
                     //Generate Room
                     Room r = new Room(i + 1);
-                    if (characters[0].isAlive)
+                    
+                    if (characters[0].isAlive) // if user is alive
                     {
                         loot = Combat(enemies, characters);                      //starts combat method
                         bool hasLooted = false;
 
                         do
                         {
-                            if (characters[0].isAlive)
+                            if (characters[0].isAlive) // if user is alive
                             {
                                 Console.Clear();
                                 //Ask user what they would like to do
@@ -149,28 +151,47 @@ namespace Group_Project
                             {
                                 nextRoom = true;
                             }
-                        } while (!nextRoom);
-
-                        Console.WriteLine("Congratulations! You cleared the ship of all pirates!");
-                        Thread.Sleep(4000);
+                        } while (!nextRoom); // stays in loop if they did not choose to exit the room
 
                     }
-
                 }
 
+                if (characters[0].isAlive) // congrats to user if they survived
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Congratulations! You cleared the ship of all pirates!");
+                    Console.ResetColor();
+                    Thread.Sleep(4000);
+                }
+                else // or tell them the game is over
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("GAME OVER");
+                    Console.ResetColor();
+                    Thread.Sleep(4000);
+                }
+
+                //update highscore if beaten
                 if (characters[0].level > topScore)
                 {
                     NewHighScore(name, characters[0].level);
                 }
 
-                Console.WriteLine("Would you like to play again?");
+                // prompt user to play again
+                Console.WriteLine("\nWould you like to play again?");
                 PlayAgain = InputConfirm();
-
-            } while (PlayAgain);
+                Console.Clear();
+            } while (PlayAgain); // stay in loop if they play again
 
 
         }
 
+        /// <summary>
+        /// Loots the Pirates that were killed
+        /// </summary>
+        /// <param name="loot">list holding their loot</param>
+        /// <param name="inv">players inventory</param>
+        /// <param name="hasLooted">tells whether or not the user already looted</param>
         static void LootPirates(List<int> loot, Inventory inv, ref bool hasLooted)
         {
             if (!hasLooted)
@@ -311,6 +332,12 @@ namespace Group_Project
             }
         }
 
+        /// <summary>
+        /// Enters the user into combat
+        /// </summary>
+        /// <param name="enemies">List of possible enemies</param>
+        /// <param name="characters">List of characters</param>
+        /// <returns>List of the pirates loot</returns>
         static List<int> Combat(List<Enemy> enemies, List<Character> characters)           //starts combat
         {
             int numEnemies = new Random().Next(2, 5);    //decided how many enemies to spawn
@@ -374,9 +401,7 @@ namespace Group_Project
                         {
                             Thread.Sleep(1000);
                             Console.WriteLine("You were Killed");
-                            Console.WriteLine("Thanks for playing!");
                             Thread.Sleep(3000);
-                            Environment.Exit(0);
                             return loot;
                         }
                     }
@@ -427,6 +452,11 @@ namespace Group_Project
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Gets the high score
+        /// </summary>
+        /// <param name="name">name of the person who got the high score</param>
+        /// <returns>the high score</returns>
         static int GetHighScores(ref string name)
         {
             string path = "HighScores.txt";
@@ -445,6 +475,11 @@ namespace Group_Project
             return score;
         }
 
+        /// <summary>
+        /// Changes the high score if it was passed
+        /// </summary>
+        /// <param name="name">name of user</param>
+        /// <param name="score">the new high score</param>
         static void NewHighScore(string name, int score)
         {
             Console.WriteLine("NEW HIGH SCORE!!!");

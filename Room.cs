@@ -90,9 +90,10 @@ namespace Group_Project
         }
 
         /// <summary>
-        /// Loots the pirates that were killed
+        /// Loots pirates
         /// </summary>
-        /// <param name="pirates">List of pirates</param>
+        /// <param name="pirates">the list of pirates to loot</param>
+        /// <param name="i">users inventory</param>
         public void LootPirates(List<Enemy> pirates, Inventory i)
         {
             foreach (var pirate in pirates)
@@ -103,6 +104,12 @@ namespace Group_Project
             }
         }
 
+        /// <summary>
+        /// Displays the users items and allows them to use them
+        /// </summary>
+        /// <param name="inv">users inventory</param>
+        /// <param name="c">users character</param>
+        /// <param name="characters">list of all characters</param>
         public void DisplayItems(Inventory inv, Character c, List<Character> characters)
         {
             Console.WriteLine("Inventory:");
