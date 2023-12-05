@@ -44,7 +44,11 @@ namespace Group_Project
             if (new Random().Next(successChance) <= successChance)
             {
                 c.Health--;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Pirate shot {0}! {1} has {2} health remaining\n", c.name, c.name, c.Health);              //pirate hit player message
+                Console.ResetColor();
+                
+
                 if (c.Health == 0)
                 {
                     c.isAlive = false;

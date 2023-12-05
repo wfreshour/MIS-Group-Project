@@ -44,19 +44,19 @@ namespace Group_Project
         {
             if (ct == ClassType.Pilot)
             {
-                Accuracy = 2; Health = 3; Speed = 2; Stealth = 5;
+                Accuracy = 4; Health = 5; Speed = 5; Stealth = 5;
             }
             else if (ct == ClassType.Heavy)
             {
-                Accuracy = 3; Health = 6; Speed = 2; Stealth = 1;
+                Accuracy = 4; Health = 8; Speed = 3; Stealth = 1;
             }
             else if (ct == ClassType.Marksman)
             {
-                Accuracy = 5; Health = 2; Speed = 2; Stealth = 3;
+                Accuracy = 8; Health = 5; Speed = 4; Stealth = 3;
             }
             else
             {
-                Accuracy = 3; Health = 3; Speed = 5; Stealth = 1;
+                Accuracy = 5; Health = 5; Speed = 7; Stealth = 1;
             }
         }
 
@@ -70,7 +70,9 @@ namespace Group_Project
             if (xp > 20 && isUser == true)
             {
                 level += 1;
-                Console.WriteLine("LEVEL UP!! You are now level {0} and have earned an upgrade point!", level);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("LEVEL UP!! You are now level {0} and have earned an upgrade point!\n", level);
+                Console.ResetColor();
                 upgradePoints += 1;
                 xp = xp - 20;
             }
@@ -114,7 +116,10 @@ namespace Group_Project
                     Console.WriteLine("{0} has died!\n", e.name);
                     return true;
                 }
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("{0} successfully hit the pirate! They have {1} health left\n", name, e.health);          //success message
+                Console.ResetColor();
+
             }
             else { Console.WriteLine("{0}'s attack missed\n", name); }         //fail message
             return false;

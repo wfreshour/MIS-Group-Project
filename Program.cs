@@ -1,4 +1,11 @@
-﻿using System;
+﻿// Will Freshour, Trevor Robinson, Nicholas Magana
+// MIS 411
+// This program is a RPG game where the user picks a class, is joined by a party, and fights their way through pirates,
+// gains levels, and finds items throughout the game.
+
+
+
+using System;
 using System.IO;
 using System.Reflection.Metadata;
 
@@ -130,6 +137,7 @@ namespace Group_Project
                                     Console.WriteLine("Please enter one of the available options above.");
                                     Console.ResetColor();
                                 }
+
                             } while (!isValid);
                         }
                         else
@@ -302,7 +310,7 @@ namespace Group_Project
             }
             Console.WriteLine("You are faced against {0} pirates!\n", numEnemies);        //prints how many pirates user has to fight 
 
-            Thread.Sleep(1000);
+            Thread.Sleep(2500);
 
             while (currentEnemies.Count > 0 && characters[0].Health > 0)          //while there are pirates still alive and the player still has health
             {
