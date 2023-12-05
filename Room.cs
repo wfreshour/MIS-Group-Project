@@ -90,6 +90,35 @@ namespace Group_Project
         }
 
         /// <summary>
+        /// Loots the pirates that were killed
+        /// </summary>
+        /// <param name="pirates">List of pirates</param>
+        public void LootPirates(List<Enemy> pirates, Inventory i)
+        {
+            foreach (var pirate in pirates)
+            {
+                // Add a random item from the pirate to the player's inventory
+                int randomItem = 0;
+                i.Add(randomItem);
+            }
+        }
+
+        public void DisplayItems(Inventory inv)
+        {
+            Console.WriteLine("Inventory:");
+            for (int i = 0; i < 5; i++)
+            {
+                if (i == 0) { Console.WriteLine("MedPack(s): {0}", inv.MedPack); }
+                else if (i == 1) { Console.WriteLine("DMG Stim(s): {0}", inv.DMGStim); }
+                else if (i == 2) { Console.WriteLine("BullsEye(s): {0}", inv.BullsEye); }
+                else if (i == 3) { Console.WriteLine("Booster(s): {0}", inv.Booster); }
+                else if (i == 4) {  Console.WriteLine("ArmorPack(s): {0}", inv.ArmorPack); }
+            }
+        }
+
+
+
+        /// <summary>
         /// gets either a Y or N response from the user
         /// </summary>
         /// <returns>true if Y, false if N</returns>

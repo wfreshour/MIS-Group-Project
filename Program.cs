@@ -14,13 +14,20 @@ namespace Group_Project
             int numRooms = 9; //holds number of rooms
             bool nextRoom = false; // tells whether or not user chose to enter next room
             ClassType userClass; // chosen class of the user
-            List<Character> characters = new List<Character>();
+            List<Character> characters = new List<Character>(); // list of characters
+            int topScore; // current highscore
+            string topName = "";  // name of current high score holder
+
+            topScore = GetHighScores(ref topName);
+            
 
             // greet user and present story
             Console.WriteLine("Welcome to Recapture!");
             Console.WriteLine("\nYou and your crew are traveling through space in your cargo freight ship when suddenly a large group of pirates\n" +
                 " trap you in a Grav Lock! They quickly board and overwhelm you and your crew and have locked you in your quarters.\n Luckily, the pirates do not" +
                 " know about the secret weapons locker you keep hidden away in the room. Arm yourselves\n and recapture your ship by clearing all the pirates!");
+
+            Console.WriteLine("\nHIGH SCORE: {0} {1}", topName, topScore);
 
             // get users name
             Console.WriteLine("\nPlease enter your name: ");
@@ -35,6 +42,7 @@ namespace Group_Project
         
             // create the users Character object
             characters.Add(new Character(name, userClass, true));
+            Inventory inventory = new Inventory();
 
             // create remaining crew
             FillCrew(characters, userClass);
@@ -57,7 +65,7 @@ namespace Group_Project
                 do
                 {
                     //Ask user what they would like to do
-                    Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot, Check Stats, Enter next room)", r.roomName);
+                    Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot, Check Stats, Enter next room, Check Inventory)", r.roomName);
                     input = Console.ReadLine();
 
                     if (input == "Loot")
@@ -86,8 +94,17 @@ namespace Group_Project
                         nextRoom = true;
                         Console.Clear();
                     }
+                    else if (input == "Check Inventory")
+                    {
+                        r.DisplayItems(inventory);
+                    }
                 } while (!nextRoom);
                 nextRoom = false;
+            }
+
+            if (characters[0].level > topScore)
+            {
+                NewHighScore(name, characters[0].level);
             }
 
         }
@@ -228,6 +245,38 @@ namespace Group_Project
         static void AnyKey()
         {
             Console.ReadKey(true);
+        }
+
+        static int GetHighScores(ref string name)
+        {
+            string path = "HighScores.txt";
+            int score = 0;
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                while(!sr.EndOfStream)
+                {
+                    name = sr.ReadLine();
+                    score = int.Parse(sr.ReadLine());
+                }
+                sr.Close();
+            }
+
+            return score;
+        }
+
+        static void NewHighScore(string name, int score)
+        {
+            Console.WriteLine("NEW HIGH SCORE!!!");
+
+            string path = "HighScores.txt";
+            
+            using (StreamWriter streamWriter = new StreamWriter(path))
+            {
+                streamWriter.WriteLine(name);
+                streamWriter.WriteLine(score);
+                streamWriter.Close();
+            }
         }
     }
 }
