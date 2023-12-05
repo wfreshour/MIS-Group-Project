@@ -151,6 +151,9 @@ namespace Group_Project
                             }
                         } while (!nextRoom);
 
+                        Console.WriteLine("Congratulations! You cleared the ship of all pirates!");
+                        Thread.Sleep(4000);
+
                     }
 
                 }
@@ -371,6 +374,9 @@ namespace Group_Project
                         {
                             Thread.Sleep(1000);
                             Console.WriteLine("You were Killed");
+                            Console.WriteLine("Thanks for playing!");
+                            Thread.Sleep(3000);
+                            Environment.Exit(0);
                             return loot;
                         }
                     }
