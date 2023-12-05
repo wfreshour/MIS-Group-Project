@@ -15,145 +15,156 @@ namespace Group_Project
     {
         static void Main(string[] args)
         {
-            string input; // to hold users input
-            string name; // name of the user
-            int xp = 0; // amount of xp found in a chest
-            int numRooms = 9; //holds number of rooms
-            bool nextRoom = false; // tells whether or not user chose to enter next room
-            ClassType userClass; // chosen class of the user
-            List<Character> characters = new List<Character>(); // list of characters
-            int topScore; // current highscore
-            string topName = "";  // name of current high score holder
-            List<Enemy> enemies = new List<Enemy>();
-            List<int> loot = new List<int>(); // holds list of loot
 
-            topScore = GetHighScores(ref topName);
+            bool PlayAgain = false;
 
-
-            // greet user and present story
-            Console.WriteLine("Welcome to Recapture!");
-            Console.WriteLine("\nYou and your crew are traveling through space in your cargo freight ship when suddenly a large group of pirates\n" +
-                " trap you in a Grav Lock! They quickly board and overwhelm you and your crew and have locked you in your quarters.\n Luckily, the pirates do not" +
-                " know about the secret weapons locker you keep hidden away in the room. Arm yourselves\n and recapture your ship by clearing all the pirates!");
-
-            Console.WriteLine("\nHIGH SCORE: {0} {1}", topName, topScore);
-
-            // get users name
-            Console.WriteLine("\nPlease enter your name: ");
-            name = Console.ReadLine();
-
-            // get users class
-            Console.WriteLine("Below are the options for your classes:");
-            DisplayClass();
-            Console.WriteLine("Please enter the number for your choice of class (The classes you dont choose will be assigned to your crew)");
-            userClass = (ClassType)ValidInput(Console.ReadLine(), 1, Enum.GetValues(typeof(ClassType)).Cast<ClassType>().Distinct().Count());
-            Console.WriteLine($"You chose {userClass} as your class.");
-
-            // create the users Character object
-            characters.Add(new Character(name, userClass, true));
-            Inventory inventory = new Inventory();
-
-            // create remaining crew
-            FillCrew(characters, userClass);
-
-            //Prompt the user to continue
-            Console.WriteLine("You are now ready to begin the journey, press any key to continue...");
-            AnyKey();
-            Console.Clear();
-
-            //Load enemies from external file
-            GenerateEnemies(enemies);
-
-
-            for (int i = 0; i < numRooms; i++)
+            do
             {
-                nextRoom = false;
-                //Generate Room
-                Room r = new Room(i + 1);
-                if (characters[0].isAlive)
+                string input; // to hold users input
+                string name; // name of the user
+                int xp = 0; // amount of xp found in a chest
+                int numRooms = 9; //holds number of rooms
+                bool nextRoom = false; // tells whether or not user chose to enter next room
+                ClassType userClass; // chosen class of the user
+                List<Character> characters = new List<Character>(); // list of characters
+                int topScore; // current highscore
+                string topName = "";  // name of current high score holder
+                List<Enemy> enemies = new List<Enemy>();
+                List<int> loot = new List<int>(); // holds list of loot
+
+                topScore = GetHighScores(ref topName);
+
+
+                // greet user and present story
+                Console.WriteLine("Welcome to Recapture!");
+                Console.WriteLine("\nYou and your crew are traveling through space in your cargo freight ship when suddenly a large group of pirates\n" +
+                    " trap you in a Grav Lock! They quickly board and overwhelm you and your crew and have locked you in your quarters.\n Luckily, the pirates do not" +
+                    " know about the secret weapons locker you keep hidden away in the room. Arm yourselves\n and recapture your ship by clearing all the pirates!");
+
+                Console.WriteLine("\nHIGH SCORE: {0} {1}", topName, topScore);
+
+                // get users name
+                Console.WriteLine("\nPlease enter your name: ");
+                name = Console.ReadLine();
+
+                // get users class
+                Console.WriteLine("Below are the options for your classes:");
+                DisplayClass();
+                Console.WriteLine("Please enter the number for your choice of class (The classes you dont choose will be assigned to your crew)");
+                userClass = (ClassType)ValidInput(Console.ReadLine(), 1, Enum.GetValues(typeof(ClassType)).Cast<ClassType>().Distinct().Count());
+                Console.WriteLine($"You chose {userClass} as your class.");
+
+                // create the users Character object
+                characters.Add(new Character(name, userClass, true));
+                Inventory inventory = new Inventory();
+
+                // create remaining crew
+                FillCrew(characters, userClass);
+
+                //Prompt the user to continue
+                Console.WriteLine("You are now ready to begin the journey, press any key to continue...");
+                AnyKey();
+                Console.Clear();
+
+                //Load enemies from external file
+                GenerateEnemies(enemies);
+
+
+                for (int i = 0; i < numRooms; i++)
                 {
-                    loot = Combat(enemies, characters);                      //starts combat method
-                    bool hasLooted = false;
-
-                    do
+                    nextRoom = false;
+                    //Generate Room
+                    Room r = new Room(i + 1);
+                    if (characters[0].isAlive)
                     {
-                        if (characters[0].isAlive)
+                        loot = Combat(enemies, characters);                      //starts combat method
+                        bool hasLooted = false;
+
+                        do
                         {
-                            Console.Clear();
-                            //Ask user what they would like to do
-                            Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot Room, Check Stats, Enter next room, Check Inventory, Loot Pirates)", r.roomName);
-
-
-                            bool isValid = true;
-
-                            do
+                            if (characters[0].isAlive)
                             {
-                                input = Console.ReadLine();
-                                if (input == "Loot Room")
-                                {
-                                    bool hasChest = r.Loot(ref xp);
+                                Console.Clear();
+                                //Ask user what they would like to do
+                                Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot Room, Check Stats, Enter next room, Check Inventory, Loot Pirates)", r.roomName);
 
-                                    if (hasChest)
+
+                                bool isValid = true;
+
+                                do
+                                {
+                                    input = Console.ReadLine();
+                                    if (input == "Loot Room")
                                     {
-                                        Console.WriteLine("\nA chest was found! It contained {0} xp", xp);
-                                        foreach (Character c in characters)
+                                        bool hasChest = r.Loot(ref xp);
+
+                                        if (hasChest)
                                         {
-                                            c.AddXP(xp);
+                                            Console.WriteLine("\nA chest was found! It contained {0} xp", xp);
+                                            foreach (Character c in characters)
+                                            {
+                                                c.AddXP(xp);
+                                            }
                                         }
+                                        else
+                                        {
+                                            Console.WriteLine("\nNo loot was found.");
+
+                                        }
+                                        Console.WriteLine("Press Any Key to continue...");
+                                        AnyKey();
+                                    }
+                                    else if (input == "Check Stats")
+                                    {
+                                        r.CheckStats(characters[0]);
+                                        Console.WriteLine("Press Any Key to continue...");
+                                        AnyKey();
+                                    }
+                                    else if (input == "Enter next room")
+                                    {
+                                        nextRoom = true;
+                                        Console.Clear();
+                                    }
+                                    else if (input == "Check Inventory")
+                                    {
+                                        r.DisplayItems(inventory, characters[0], characters);
+                                        Console.WriteLine("Press Any Key to continue...");
+                                        AnyKey();
+                                    }
+                                    else if (input == "Loot Pirates")
+                                    {
+                                        LootPirates(loot, inventory, ref hasLooted);
                                     }
                                     else
                                     {
-                                        Console.WriteLine("\nNo loot was found.");
-
+                                        isValid = false;
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Please enter one of the available options above.");
+                                        Console.ResetColor();
                                     }
-                                    Console.WriteLine("Press Any Key to continue...");
-                                    AnyKey();
-                                }
-                                else if (input == "Check Stats")
-                                {
-                                    r.CheckStats(characters[0]);
-                                    Console.WriteLine("Press Any Key to continue...");
-                                    AnyKey();
-                                }
-                                else if (input == "Enter next room")
-                                {
-                                    nextRoom = true;
-                                    Console.Clear();
-                                }
-                                else if (input == "Check Inventory")
-                                {
-                                    r.DisplayItems(inventory, characters[0], characters);
-                                    Console.WriteLine("Press Any Key to continue...");
-                                    AnyKey();
-                                }
-                                else if (input == "Loot Pirates")
-                                {
-                                    LootPirates(loot, inventory, ref hasLooted);
-                                }
-                                else
-                                {
-                                    isValid = false;
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("Please enter one of the available options above.");
-                                    Console.ResetColor();
-                                }
 
-                            } while (!isValid);
-                        }
-                        else
-                        {
-                            nextRoom = true;
-                        }
-                    } while (!nextRoom);
+                                } while (!isValid);
+                            }
+                            else
+                            {
+                                nextRoom = true;
+                            }
+                        } while (!nextRoom);
+
+                    }
 
                 }
 
-            }
+                if (characters[0].level > topScore)
+                {
+                    NewHighScore(name, characters[0].level);
+                }
 
-            if (characters[0].level > topScore)
-            {
-                NewHighScore(name, characters[0].level);
-            }
+                Console.WriteLine("Would you like to play again?");
+                PlayAgain = InputConfirm();
+
+            } while (PlayAgain);
+
 
         }
 
@@ -465,5 +476,40 @@ namespace Group_Project
                 sr.Close();
             }
         }
+
+        /// <summary>
+        /// gets either a Y or N response from the user
+        /// </summary>
+        /// <returns>true if Y, false if N</returns>
+        static bool InputConfirm()
+        {
+            bool isValid = false;
+            bool response = false;
+
+            while (!isValid)
+            {
+                ConsoleKey opt = Console.ReadKey().Key;
+                Console.WriteLine();
+                switch (opt)
+                {
+                    case ConsoleKey.Y:
+                        isValid = true;
+                        response = true;
+                        break;
+                    case ConsoleKey.N:
+                        isValid = true;
+                        response = false;
+                        break;
+                    default:
+                        isValid = false;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Please either press Y or N");
+                        Console.ResetColor();
+                        break;
+                }
+            }
+            return response;
+        }
     }
+}
 }
