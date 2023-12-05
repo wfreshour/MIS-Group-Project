@@ -183,7 +183,7 @@ namespace Group_Project
                 Console.Clear();
             } while (PlayAgain); // stay in loop if they play again
 
-
+            Console.WriteLine("Thank you for playing!");
         }
 
         /// <summary>
