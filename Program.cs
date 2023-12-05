@@ -57,56 +57,68 @@ namespace Group_Project
             //Load enemies from external file
             GenerateEnemies(enemies);
 
+            
             for (int i = 0; i < numRooms; i++)
             {
+                nextRoom = false;
                 //Generate Room
                 Room r = new Room(i+1);
-
-                loot = Combat(enemies, characters);                      //starts combat method
-                bool hasLooted = false;
-
-                do
+                if (characters[0].isAlive)
                 {
-                    //Ask user what they would like to do
-                    Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot Room, Check Stats, Enter next room, Check Inventory, Loot Pirates)", r.roomName);
-                    input = Console.ReadLine();
+                    loot = Combat(enemies, characters);                      //starts combat method
+                    bool hasLooted = false;
 
-                    if (input == "Loot Room")
+                    do 
                     {
-                        bool hasChest = r.Loot(ref xp);
-
-                        if (hasChest)
+                        if (characters[0].isAlive)
                         {
-                            Console.WriteLine("\nA chest was found! It contained {0} xp", xp);
-                            foreach (Character c in characters)
+                            //Ask user what they would like to do
+                            Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot Room, Check Stats, Enter next room, Check Inventory, Loot Pirates)", r.roomName);
+                            input = Console.ReadLine();
+
+                            if (input == "Loot Room")
                             {
-                                c.AddXP(xp);
+                                bool hasChest = r.Loot(ref xp);
+
+                                if (hasChest)
+                                {
+                                    Console.WriteLine("\nA chest was found! It contained {0} xp", xp);
+                                    foreach (Character c in characters)
+                                    {
+                                        c.AddXP(xp);
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("\nNo loot was found.");
+                                }
+                            }
+                            else if (input == "Check Stats")
+                            {
+                                r.CheckStats(characters[0]);
+                            }
+                            else if (input == "Enter next room")
+                            {
+                                nextRoom = true;
+                                Console.Clear();
+                            }
+                            else if (input == "Check Inventory")
+                            {
+                                r.DisplayItems(inventory);
+                            }
+                            else if (input == "Loot Pirates")
+                            {
+                                LootPirates(loot, inventory, ref hasLooted);
                             }
                         }
                         else
                         {
-                            Console.WriteLine("\nNo loot was found.");
+                            nextRoom = true;
                         }
-                    }
-                    else if (input == "Check Stats")
-                    {
-                        r.CheckStats(characters[0]);
-                    }
-                    else if (input == "Enter next room")
-                    {
-                        nextRoom = true;
-                        Console.Clear();
-                    }
-                    else if (input == "Check Inventory")
-                    {
-                        r.DisplayItems(inventory);
-                    }
-                    else if (input == "Loot Pirates")
-                    {
-                        LootPirates(loot, inventory, ref hasLooted);
-                    }
-                } while (!nextRoom);
-                nextRoom = false;
+                    } while (!nextRoom);
+
+                }
+
             }
 
             if (characters[0].level > topScore)
