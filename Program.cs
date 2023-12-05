@@ -200,7 +200,7 @@ namespace Group_Project
             {
                 enemies.Add(new Enemy());
             }
-            Console.WriteLine("You are faced against {0} pirates!", numEnemies);        //prints how many pirates user fights 
+            Console.WriteLine("You are faced against {0} pirates!", numEnemies);        //prints how many pirates user has to fight 
 
             while(enemies.Count > 0 && health > 0)          //while there are pirates still alive and the player still has health
             {
