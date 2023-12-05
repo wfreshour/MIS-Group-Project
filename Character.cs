@@ -56,7 +56,7 @@ namespace Group_Project
             }
             else
             {
-                 Accuracy = 3; Health = 3; Speed = 5; Stealth = 1;
+                Accuracy = 3; Health = 3; Speed = 5; Stealth = 1;
             }
         }
 
@@ -105,10 +105,10 @@ namespace Group_Project
 
         public bool PlayerAttack(Enemy e)
         {
-            int successChance = 50 +( Accuracy * 5);              //takes accuracy stat and detirmines if successfull hit occurs
+            int successChance = 50 + (Accuracy * 5);              //takes accuracy stat and detirmines if successfull hit occurs
             if (new Random().Next(1, 101) <= successChance)
             {
-                e.health-=Damage;
+                e.health -= Damage;
                 if (e.health <= 0)
                 {
                     Console.WriteLine("{0} has died!\n", e.name);
@@ -121,7 +121,7 @@ namespace Group_Project
 
         }
 
-        public void UseItem(Inventory i)
+        public void UseItem(Inventory i, List<Character> characters)
         {
             Console.WriteLine("Which Item would you like to use?");
             string input = Console.ReadLine();
@@ -146,10 +146,29 @@ namespace Group_Project
                 if (i.Booster > 0) { Speed += 1; i.Booster -= 1; Console.WriteLine("Speed Increased!"); }
                 else { Console.WriteLine("You do not have a Booster available."); }
             }
-            else if (input == "ArmorPack")
+            else if (input == "Revive")
             {
-                if (i.ArmorPack > 0) { Health += 1; i.ArmorPack -= 1; Console.WriteLine("Health Increased!"); }
-                else { Console.WriteLine("You do not have a ArmorPack available."); }
+                if (i.Revive > 0)
+                {
+                    bool hasRevived = false;
+                    foreach (Character c in characters)
+                    {
+                        if (!c.isAlive && hasRevived == false)
+                        {
+                            c.isAlive = true;
+                            hasRevived = true;
+                            c.Health = 3;
+                            Console.WriteLine("{0} has been revived! They now have 3 health!", c.name);
+                            i.Revive -= 1;
+                        }
+                    }
+
+                    if (!hasRevived)
+                    {
+                        Console.WriteLine("There is nobody to Revive.");
+                    }
+                }
+                else { Console.WriteLine("You do not have a Revive available."); }
             }
         }
     }

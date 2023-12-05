@@ -103,7 +103,7 @@ namespace Group_Project
             }
         }
 
-        public void DisplayItems(Inventory inv, Character c)
+        public void DisplayItems(Inventory inv, Character c, List<Character> characters)
         {
             Console.WriteLine("Inventory:");
             for (int i = 0; i < 5; i++)
@@ -112,13 +112,13 @@ namespace Group_Project
                 else if (i == 1) { Console.WriteLine("DMG Stim(s): {0}", inv.DMGStim); }
                 else if (i == 2) { Console.WriteLine("BullsEye(s): {0}", inv.BullsEye); }
                 else if (i == 3) { Console.WriteLine("Booster(s): {0}", inv.Booster); }
-                else if (i == 4) {  Console.WriteLine("ArmorPack(s): {0}", inv.ArmorPack); }
+                else if (i == 4) { Console.WriteLine("ArmorPack(s): {0}", inv.Revive); }
             }
 
             Console.WriteLine("Would you like to use any itmes? (Y/N)");
             bool input = InputConfirm();
 
-            if (input) { c.UseItem(inv); }
+            if (input) { c.UseItem(inv, characters); }
         }
 
 

@@ -16,7 +16,7 @@ namespace Group_Project
         public int stealth;
         public int accuracy;
         public int loot;
-        
+
 
         public Enemy(string name, int health, int speed, int stealth, int accuracy)
         {
@@ -41,7 +41,7 @@ namespace Group_Project
         public void EnemyAttack(Character c)
         {
             int successChance = 50 + (accuracy * 5);                    //uses accuracy stat to determine if they hit shot
-            if(new Random().Next(successChance) <= successChance)
+            if (new Random().Next(successChance) <= successChance)
             {
                 c.Health--;
                 Console.WriteLine("Pirate shot {0}! {1} has {2} health remaining\n", c.name, c.name, c.Health);              //pirate hit player message
