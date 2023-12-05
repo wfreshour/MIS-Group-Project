@@ -10,19 +10,23 @@ namespace Group_Project
 {
     public class Enemy
     {
-        private int health;
-        private string name;
-        private int speed;
-        private int stealth;
-        private int accuracy;
-        List<Enemy> pirates = new List<Enemy>();
-
-        public void fileReader()
-        {
-
-        }
-       
+        public int health;
+        public string name;
+        public int speed;
+        public int stealth;
+        public int accuracy;
+        public int loot;
         
+
+        public Enemy(string name, int health, int speed, int stealth, int accuracy)
+        {
+            this.name = name;
+            this.health = health;
+            this.speed = speed;
+            this.stealth = stealth;
+            this.accuracy = accuracy;
+            loot = new Random().Next(0, 4);
+        }
 
         public void death()
         {
@@ -34,15 +38,20 @@ namespace Group_Project
             throw new System.NotImplementedException();
         }
 
-        public void EnemyAttack()
+        public void EnemyAttack(Character c)
         {
-            int successChance = 50 + Enemy.Accuracy * 5;                    //uses accuracy stat to determine if they hit shot
+            int successChance = 50 + (accuracy * 5);                    //uses accuracy stat to determine if they hit shot
             if(new Random().Next(successChance) <= successChance)
             {
-                userHealth--;
-                Console.WriteLine("Pirate shot you! You have {0} health remaining",userHealth)              //pirate hit player message
+                c.Health--;
+                Console.WriteLine("Pirate shot {0}! {1} has {2} health remaining", c.name, c.name, c.Health);              //pirate hit player message
+                if (c.Health == 0)
+                {
+                    c.isAlive = false;
+                    Console.WriteLine("{0} has died", c.name);
+                }
             }
-            else { Console.WriteLine("Pirate Attack Missed")}                   //pirate misses shot message
+            else { Console.WriteLine("Pirate Attack Missed"); }                   //pirate misses shot message
 
         }
     }

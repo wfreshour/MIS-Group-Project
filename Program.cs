@@ -17,6 +17,8 @@ namespace Group_Project
             List<Character> characters = new List<Character>(); // list of characters
             int topScore; // current highscore
             string topName = "";  // name of current high score holder
+            List<Enemy> enemies = new List<Enemy>();
+            List<int> loot = new List<int>(); // holds list of loot
 
             topScore = GetHighScores(ref topName);
             
@@ -52,23 +54,24 @@ namespace Group_Project
             AnyKey();
             Console.Clear();
 
-            //Load monsters from external file
-            
+            //Load enemies from external file
+            GenerateEnemies(enemies);
 
             for (int i = 0; i < numRooms; i++)
             {
                 //Generate Room
                 Room r = new Room(i+1);
 
-                StartCombat();                      //starts combat method
+                loot = Combat(enemies, characters);                      //starts combat method
+                bool hasLooted = false;
 
                 do
                 {
                     //Ask user what they would like to do
-                    Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot, Check Stats, Enter next room, Check Inventory)", r.roomName);
+                    Console.WriteLine("You are now in the {0}. \nWhat would you like to do? (Loot Room, Check Stats, Enter next room, Check Inventory, Loot Pirates)", r.roomName);
                     input = Console.ReadLine();
 
-                    if (input == "Loot")
+                    if (input == "Loot Room")
                     {
                         bool hasChest = r.Loot(ref xp);
 
@@ -98,6 +101,10 @@ namespace Group_Project
                     {
                         r.DisplayItems(inventory);
                     }
+                    else if (input == "Loot Pirates")
+                    {
+                        LootPirates(loot, inventory, ref hasLooted);
+                    }
                 } while (!nextRoom);
                 nextRoom = false;
             }
@@ -107,6 +114,46 @@ namespace Group_Project
                 NewHighScore(name, characters[0].level);
             }
 
+        }
+
+        static void LootPirates(List<int> loot, Inventory inv, ref bool hasLooted)
+        {
+            if (!hasLooted)
+            {
+                foreach (int i in loot)
+                {
+                    if (i == 0)
+                    {
+                        Console.WriteLine("You found a medpack!");
+                        inv.MedPack++;
+                    }
+                    else if (i == 1)
+                    {
+                        Console.WriteLine("You found a DMG Stim!");
+                        inv.DMGStim++;
+                    }
+                    else if (i == 2)
+                    {
+                        Console.WriteLine("You found a BullsEye!");
+                        inv.BullsEye++;
+                    }
+                    else if (i == 3)
+                    {
+                        Console.WriteLine("You found a Booster!");
+                        inv.Booster++;
+                    }
+                    else if (i == 4)
+                    {
+                        Console.WriteLine("You found a ArmorPack!");
+                        inv.ArmorPack++;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("You have already looted!");
+            }
+             hasLooted = true;
         }
 
         /// <summary>
@@ -208,35 +255,94 @@ namespace Group_Project
             }
         }
 
-        static void StartCombat()           //starts combat
+        static List<int> Combat(List<Enemy> enemies, List<Character> characters)           //starts combat
         {
             int numEnemies = new Random().Next(2, 5);    //decided how many enemies to spawn
-            List<Enemy> enemies = new List<Enemy>();
+            List<Enemy> currentEnemies = new List<Enemy>();
+            List<int> loot = new List<int>();
 
             for (int i = 0;i < numEnemies;i++)          //creates enemy based on how many need to spawn
             {
-                enemies.Add(new Enemy());
+                int enemyID = new Random().Next(0, 3);
+                currentEnemies.Add(new Enemy(enemies[enemyID].name, enemies[enemyID].health, enemies[enemyID].speed, enemies[enemyID].stealth, enemies[enemyID].accuracy));
             }
             Console.WriteLine("You are faced against {0} pirates!", numEnemies);        //prints how many pirates user has to fight 
 
-            while(enemies.Count > 0 && health > 0)          //while there are pirates still alive and the player still has health
+            while(currentEnemies.Count > 0 && characters[0].Health > 0)          //while there are pirates still alive and the player still has health
             {
-                for(int j = 0; j < enemies.Count; j++)
+                foreach(Character character in characters)
                 {
-                    if (enemies[i].Speed <= User.speed)         //if the user is faster than a pirate they attack
+                    if (character.isUser == true && currentEnemies.Count > 0)
                     {
-                        PlayerAttack();
+                        Console.WriteLine("Choose Which enemy to attack:"); //asks user which pirate to attack
+                        for (int i = 0; i < currentEnemies.Count; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. Pirate {i + 1} (Health: {currentEnemies[i].health})");      //lists remaining pirates
+                        }
+                        int choice = int.Parse(Console.ReadLine());
+                        if (currentEnemies[choice - 1].speed <= character.Speed)         //if the user is faster than a pirate they attack
+                        {
+                            bool death = character.PlayerAttack(currentEnemies[choice - 1]);
+                            if (death)
+                            {
+                                loot.Add(currentEnemies[choice - 1].loot);
+                                currentEnemies.RemoveAt(choice - 1);
+                            }
+                            else
+                            {
+                                currentEnemies[choice - 1].EnemyAttack(character);
+                            }
+                        }
+                        else
+                        {
+                            currentEnemies[choice - 1].EnemyAttack(character);
+                            bool death = character.PlayerAttack(currentEnemies[choice - 1]);
+                            if (death)
+                            {
+                                loot.Add(currentEnemies[choice - 1].loot);
+                                currentEnemies.RemoveAt(choice - 1);
+                            }
+                        }
+                        if (characters[0].Health <= 0)                    // if player health is 0, death and exit
+                        {
+                            Console.WriteLine("You were Killed");
+                            return loot;
+                        }
                     }
-                    else { EnemyAttack(); }                 //else pirate attacks?
-
+                    else if(character.isAlive && currentEnemies.Count > 0)
+                    {
+                        int choice = new Random().Next(1, currentEnemies.Count());
+                        if (currentEnemies[choice - 1].speed <= character.Speed)         //if the user is faster than a pirate they attack
+                        {
+                            bool death = character.PlayerAttack(currentEnemies[choice - 1]);
+                            if (death)
+                            {
+                                loot.Add(currentEnemies[choice - 1].loot);
+                                currentEnemies.RemoveAt(choice - 1);
+                            }
+                            else
+                            {
+                                currentEnemies[choice - 1].EnemyAttack(character);
+                            }
+                        }
+                        else
+                        {
+                            currentEnemies[choice - 1].EnemyAttack(character);
+                            if (character.isAlive)
+                            {
+                                bool death = character.PlayerAttack(currentEnemies[choice - 1]);
+                                if (death)
+                                {
+                                    loot.Add(currentEnemies[choice - 1].loot);
+                                    currentEnemies.RemoveAt(choice - 1);
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            if (userHealth <= 0)                    // if player health is 0, death and exit
-            {
-                Console.WriteLine("You were Killed");
-                Environment.Exit(0);
-            }
             Console.WriteLine("All pirates defeated. The room is now safe");            //all pirates defeated message
+            return loot;
         }
 
         /// <summary>
@@ -276,6 +382,30 @@ namespace Group_Project
                 streamWriter.WriteLine(name);
                 streamWriter.WriteLine(score);
                 streamWriter.Close();
+            }
+        }
+
+        /// <summary>
+        /// generates enemies from an external file
+        /// </summary>
+        /// <param name="enemies">list of enemies</param>
+        static void GenerateEnemies(List<Enemy> enemies)
+        {
+            string path = "Pirates.txt";
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string n = sr.ReadLine(); 
+                    int a = int.Parse(sr.ReadLine()); 
+                    int h = int.Parse(sr.ReadLine());
+                    int sp = int.Parse(sr.ReadLine());
+                    int st = int.Parse(sr.ReadLine());
+                    Enemy enemy = new Enemy(n, h, sp, st, a);
+                    enemies.Add(enemy);
+                }
+                sr.Close();
             }
         }
     }
