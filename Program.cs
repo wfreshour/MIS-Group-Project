@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection.Metadata;
 
 namespace Group_Project
 {
@@ -44,15 +45,14 @@ namespace Group_Project
             Console.Clear();
 
             //Load monsters from external file
-            //string filePath = "path";                                             creates connection to file             NEEDS WORK
-            //Enemy pirate =createEnemy(filePath);                                  reads from external file            NEEDS WORK
+            
 
             for (int i = 0; i < numRooms; i++)
             {
                 //Generate Room
                 Room r = new Room(i+1);
 
-                //Start combat
+                StartCombat();                      //starts combat method
 
                 do
                 {
@@ -189,6 +189,37 @@ namespace Group_Project
                     }
                 }
             }
+        }
+
+        static void StartCombat()           //starts combat
+        {
+            int numEnemies = new Random().Next(2, 5);    //decided how many enemies to spawn
+            List<Enemy> enemies = new List<Enemy>();
+
+            for (int i = 0;i < numEnemies;i++)          //creates enemy based on how many need to spawn
+            {
+                enemies.Add(new Enemy());
+            }
+            Console.WriteLine("You are faced against {0} pirates!", numEnemies);        //prints how many pirates user fights 
+
+            while(enemies.Count > 0 && health > 0)          //while there are pirates still alive and the player still has health
+            {
+                for(int j = 0; j < enemies.Count; j++)
+                {
+                    if (enemies[i].Speed <= User.speed)         //if the user is faster than a pirate they attack
+                    {
+                        PlayerAttack();
+                    }
+                    else { EnemyAttack(); }                 //else pirate attacks?
+
+                }
+            }
+            if (userHealth <= 0)                    // if player health is 0, death and exit
+            {
+                Console.WriteLine("You were Killed");
+                Environment.Exit(0);
+            }
+            Console.WriteLine("All pirates defeated. The room is now safe");            //all pirates defeated message
         }
 
         /// <summary>

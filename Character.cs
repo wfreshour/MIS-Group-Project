@@ -99,9 +99,22 @@ namespace Group_Project
             }
         }
 
-        public void attack()
+        public void PlayerAttack(List<Enemy> enemies)
         {
-            throw new System.NotImplementedException();
+            Console.WriteLine("Choose Which enemy to attack:"); //asks user which pirate to attack
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. Pirate {i + 1} (Health: {enemies[i].Health})");      //lists remaining pirates
+            }
+            int choice = GetInput(1, enemies.Count);
+            int successChance = 50 + Accuracy * 5;              //takes accuracy stat and detirmines if successfull hit occurs
+            if (new Random().Next(1, 101) <= successChance)
+                {
+                    enemies[choice - 1].Health--;
+                Console.WriteLine("You successfully hit the pirate! They have {0} health left", enemies[choice - 1].health);          //success message
+                }
+            else { Console.WriteLine("Your attack missed"); }         //fail message
+
         }
 
         public void death()
