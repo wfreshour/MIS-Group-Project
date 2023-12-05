@@ -278,7 +278,7 @@ namespace Group_Project
                 int enemyID = new Random().Next(0, 3);
                 currentEnemies.Add(new Enemy(enemies[enemyID].name, enemies[enemyID].health, enemies[enemyID].speed, enemies[enemyID].stealth, enemies[enemyID].accuracy));
             }
-            Console.WriteLine("You are faced against {0} pirates!", numEnemies);        //prints how many pirates user has to fight 
+            Console.WriteLine("You are faced against {0} pirates!\n", numEnemies);        //prints how many pirates user has to fight 
 
             while(currentEnemies.Count > 0 && characters[0].Health > 0)          //while there are pirates still alive and the player still has health
             {
@@ -292,6 +292,7 @@ namespace Group_Project
                             Console.WriteLine($"{i + 1}. Pirate {i + 1} (Health: {currentEnemies[i].health})");      //lists remaining pirates
                         }
                         int choice = int.Parse(Console.ReadLine());
+                        Console.Clear();
                         if (currentEnemies[choice - 1].speed <= character.Speed)         //if the user is faster than a pirate they attack
                         {
                             bool death = character.PlayerAttack(currentEnemies[choice - 1]);
@@ -353,7 +354,7 @@ namespace Group_Project
                     }
                 }
             }
-            Console.WriteLine("All pirates defeated. The room is now safe");            //all pirates defeated message
+            Console.WriteLine("All pirates defeated. The room is now safe\n");            //all pirates defeated message
             return loot;
         }
 
@@ -410,6 +411,7 @@ namespace Group_Project
                 while (!sr.EndOfStream)
                 {
                     string n = sr.ReadLine(); 
+                    
                     int a = int.Parse(sr.ReadLine()); 
                     int h = int.Parse(sr.ReadLine());
                     int sp = int.Parse(sr.ReadLine());

@@ -111,12 +111,12 @@ namespace Group_Project
                 e.health-=Damage;
                 if (e.health <= 0)
                 {
-                    Console.WriteLine("{0} has died!", e.name);
+                    Console.WriteLine("{0} has died!\n", e.name);
                     return true;
                 }
-                Console.WriteLine("{0} successfully hit the pirate! They have {1} health left", name, e.health);          //success message
+                Console.WriteLine("{0} successfully hit the pirate! They have {1} health left\n", name, e.health);          //success message
             }
-            else { Console.WriteLine("{0}'s attack missed", name); }         //fail message
+            else { Console.WriteLine("{0}'s attack missed\n", name); }         //fail message
             return false;
 
         }

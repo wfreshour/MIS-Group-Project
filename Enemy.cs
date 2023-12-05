@@ -44,14 +44,14 @@ namespace Group_Project
             if(new Random().Next(successChance) <= successChance)
             {
                 c.Health--;
-                Console.WriteLine("Pirate shot {0}! {1} has {2} health remaining", c.name, c.name, c.Health);              //pirate hit player message
+                Console.WriteLine("Pirate shot {0}! {1} has {2} health remaining\n", c.name, c.name, c.Health);              //pirate hit player message
                 if (c.Health == 0)
                 {
                     c.isAlive = false;
-                    Console.WriteLine("{0} has died", c.name);
+                    Console.WriteLine("{0} has died\n", c.name);
                 }
             }
-            else { Console.WriteLine("Pirate Attack Missed"); }                   //pirate misses shot message
+            else { Console.WriteLine("Pirate Attack Missed\n"); }                   //pirate misses shot message
 
         }
     }
