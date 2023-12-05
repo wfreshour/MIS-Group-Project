@@ -104,7 +104,7 @@ namespace Group_Project
                             }
                             else if (input == "Check Inventory")
                             {
-                                r.DisplayItems(inventory);
+                                r.DisplayItems(inventory, characters[0]);
                             }
                             else if (input == "Loot Pirates")
                             {

@@ -30,15 +30,5 @@ namespace Group_Project
             else if (item == 3) { Booster++; }
             else if (item == 4) { ArmorPack++; }
         }
-
-        public void dropItem()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void pickUp()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

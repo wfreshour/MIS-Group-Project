@@ -19,6 +19,7 @@ namespace Group_Project
         public int Speed;
         public int Stealth;
         public bool isAlive;
+        public int Damage;
 
         /// <summary>
         /// constructor for the character
@@ -36,6 +37,7 @@ namespace Group_Project
             upgradePoints = 0;
             AssignStats();
             isAlive = true;
+            Damage = 1;
         }
 
         public void AssignStats()
@@ -106,8 +108,8 @@ namespace Group_Project
             int successChance = 50 +( Accuracy * 5);              //takes accuracy stat and detirmines if successfull hit occurs
             if (new Random().Next(1, 101) <= successChance)
             {
-                e.health-=1;
-                if (e.health == 0)
+                e.health-=Damage;
+                if (e.health <= 0)
                 {
                     Console.WriteLine("{0} has died!", e.name);
                     return true;
@@ -119,19 +121,36 @@ namespace Group_Project
 
         }
 
-        public void death()
+        public void UseItem(Inventory i)
         {
-            throw new System.NotImplementedException();
-        }
+            Console.WriteLine("Which Item would you like to use?");
+            string input = Console.ReadLine();
 
-        public void interact()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void moveRoom()
-        {
-            throw new System.NotImplementedException();
+            if (input == "MedPack")
+            {
+                if (i.MedPack > 0) { Health += 1; i.MedPack -= 1; Console.WriteLine("Health Increased!"); }
+                else { Console.WriteLine("You do not have an available MedPack"); }
+            }
+            else if (input == "DMG Stim")
+            {
+                if (i.DMGStim > 0) { Damage += 1; i.DMGStim -= 1; Console.WriteLine("Damage Increased!"); }
+                else { Console.WriteLine("You do not have a DMG Stim available"); }
+            }
+            else if (input == "BullsEye")
+            {
+                if (i.BullsEye > 0) { Accuracy += 1; i.BullsEye -= 1; Console.WriteLine("Accuracy Increased!"); }
+                else { Console.WriteLine("You do not have a BullsEye available."); }
+            }
+            else if (input == "Booster")
+            {
+                if (i.Booster > 0) { Speed += 1; i.Booster -= 1; Console.WriteLine("Speed Increased!"); }
+                else { Console.WriteLine("You do not have a Booster available."); }
+            }
+            else if (input == "ArmorPack")
+            {
+                if (i.ArmorPack > 0) { Health += 1; i.ArmorPack -= 1; Console.WriteLine("Health Increased!"); }
+                else { Console.WriteLine("You do not have a ArmorPack available."); }
+            }
         }
     }
 }
